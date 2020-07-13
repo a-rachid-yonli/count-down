@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <title>countdown</title>
+</head>
+<style>
+    body {
+        background-color: rgb(35, 56, 77);
+    }
+    
+    #centre {
+        position: relative!important;
+        top: 200px!important;
+        width: 500px!important;
+    }
+    
+    #jump {
+        background-color: rgb(35, 56, 77)!important;
+    }
+    
+    #time {
+        font-size: 900%!important;
+    }
+    
+    #end {
+        font-size: 150%!important;
+        font-family: monospace;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <button data-time="20" id="secs" type="button" class="btn py-4 btn-primary btn-lg display-4 btn-block">20 secs</button>
+            </div>
+            <div class="col-sm">
+                <button data-time="300" id="ettr" type="button" class="btn py-4 btn-primary btn-lg display-4 btn-block">Ettirement</button>
+            </div>
+            <div class="col-sm">
+                <button data-time="1500" id="chayi" type="button" class="btn py-4 btn-primary btn-lg display-4 btn-block">Prier</button>
+            </div>
+            <div class="col-sm">
+                <button data-time="3000" id="niebs" type="button" class="btn py-4 btn-primary btn-lg  display-4 btn-block">Niebs</button>
+            </div>
+            <div class="col-sm">
+                <button id="dej" data-time="3600" type="button" class="btn py-4 btn-primary btn-lg display-4 btn-block">Dejeuner</button>
+            </div>
+        </div>
+    </div>
+    <div id="centre" class="container ">
+        <div class="row ">
+            <div class="col">
+                <form name="customForm" id="custom">
+                    <div class="form-group">
+                        <input type="text" name="minute" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter minutes">
+                    </div>
+                </form>
+                <div id="jump" class="jumbotron mt-5 bg-success jumbotron-fluid">
+                    <h1 id="time" class="display-1 text-center text-light "> </h1>
+                    <h3 id="end" class="display-5 text-center text-light"></h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const timeDisplay = document.getElementById('time');
+        const endtime = document.getElementById('end');
+        const buttons = document.querySelectorAll('[data-time]');
+        const backTime = document.getElementById('end');
+
+        let countdown;
+
+        function timer(seconds) {
+            clearInterval(countdown)
+            const now = Date.now();
+            const then = now + seconds * 1000;
+            displayTimeLeft(seconds)
+            displayEndTime(then)
+
+
+            countdown = setInterval(() => {
+                const secondsLeft = Math.round((then - Date.now()) / 1000);
+                if (secondsLeft < 0) {
+                    clearInterval(countdown)
+                    return;
+                }
+                displayTimeLeft(secondsLeft);
+            }, 1000);
+        };
+
+        function displayTimeLeft(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainderSeconds = seconds % 60;
+            const display = `${minutes}:${remainderSeconds < 10 ?'0':'' }${remainderSeconds }`;
+            timeDisplay.textContent = display;
+
+        };
+
+        function displayEndTime(timestamp) {
+            const end = new Date(timestamp);
+            const hour = end.getHours();
+            const minutes = end.getMinutes();
+            backTime.textContent = `Be Back At ${hour}:${minutes}`
+
+
+        }
+
+        function startTimer() {
+            const seconds = parseInt(this.dataset.time);
+            timer(seconds);
+        }
+        buttons.forEach(button => button.addEventListener('click', startTimer));
+        document.customForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const mins = this.minute.value;
+            timer(mins * 60);
+            this.reset();
+
+        });
+    </script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+</body>
+
+</html>
